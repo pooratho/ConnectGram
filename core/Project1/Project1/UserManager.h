@@ -12,20 +12,22 @@ using namespace std;
 
 class UserManager {
 private:
-    unordered_map<string, User*> users;
-    Trie userTrie;
+    unordered_map<string, User*> users;  
+    Trie userTrie;                      
 
 public:
     UserManager() = default;
     ~UserManager();
 
     bool signup(const string& username, const string& password);
-
     User* login(const string& username, const string& password);
 
     vector<string> searchUser(const string& prefix);
 
     User* getUser(const string& username);
+
+    bool follow(User* from, const string& targetUsername);
+    bool unfollow(User* from, const string& targetUsername);
 };
 
 #endif
