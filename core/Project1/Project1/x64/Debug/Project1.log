@@ -1,0 +1,3 @@
+﻿  Application.cpp
+x64\Debug\UserManager.obj : warning LNK4042: object specified more than once; extras ignored
+  Project1.vcxproj -> C:\Users\Taheri\OneDrive\دسکتاپ\ConnectGram\core\Project1\x64\Debug\Project1.exe
