@@ -20,14 +20,6 @@ bool User::checkPassword(const string& pwd) const {
     return password == to_string(hasher(pwd));
 }
 
-void User::follow(const string& other) {
-    following.insert(other);
-}
-
-void User::unfollow(const string& other) {
-    following.erase(other);
-}
-
 void User::addFollower() { 
     followersCount++; 
 }
@@ -55,10 +47,10 @@ void User::showSearchHistory() const {
 void User::display() const {
     cout << "Username: " << username << endl;
     cout << "Followers: " << followersCount << endl;
+
     cout << "Following: ";
-    for (const auto& f : following) cout << f << " ";
-    cout << endl;
-    cout << "Search History: ";
-    for (const auto& s : searchHistory) cout << s << " ";
+    for (const auto& u : following)
+        cout << u->username << " ";
     cout << endl;
 }
+
