@@ -1,5 +1,10 @@
 #include "PostManager.h"
 #include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <algorithm>
 
 PostManager::~PostManager() {
     for (auto& pair : allPosts) {
@@ -20,7 +25,6 @@ bool PostManager::deletePost(int postId) {
     if (!allPosts.count(postId)) return false;
 
     Post* p = allPosts[postId];
-
     allPosts.erase(postId);
 
     auto& postsVec = userPosts[p->author->username];
@@ -44,8 +48,17 @@ std::vector<Post*> PostManager::getPostsByUser(const std::string& username) {
 
 std::vector<Post*> PostManager::getPostsByHashtag(const std::string& hashtag) {
     std::vector<Post*> result;
-    if (hashtagIndex.count(hashtag))
+    if (hashtagIndex.count(hashtag)) {
         result.assign(hashtagIndex[hashtag].begin(), hashtagIndex[hashtag].end());
+    }
+
+    std::sort(result.begin(), result.end(), [](Post* a, Post* b) {
+        return a->timestamp > b->timestamp;
+        });
+
+    if (result.size() > 10)
+        result.resize(10);
+
     return result;
 }
 
