@@ -45,3 +45,8 @@ bin/
 obj/
 *.user
 *.suo
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.VC.db
