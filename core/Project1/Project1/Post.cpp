@@ -2,8 +2,10 @@
 #include "User.h"
 #include <iostream>
 
-Post::Post(int id, const std::string& content, User* author)
-    : id(id), content(content), author(author), likeCount(0)
+int Post::nextId = 1;
+
+Post::Post(User* author, const std::string& content)
+    : id(nextId++), content(content), author(author), likeCount(0)
 {
     timestamp = std::chrono::system_clock::now();
     parseHashtags();

@@ -1,18 +1,10 @@
-#ifndef APPLICATION_H
-#define APPLICATION_H
-
-#include <iostream>
-#include <string>
-#include <vector>
-#include <sstream>
-
+#include "PostManager.h"
 #include "UserManager.h"
-
-using namespace std;
 
 class Application {
 private:
     UserManager userManager;
+    PostManager postManager;
     User* currentUser = nullptr;
     bool isRunning = true;
 
@@ -31,6 +23,9 @@ private:
     void handleUnfollow(const vector<string>& args);
     void showCurrentUser() const;
     void showHelp() const;
-};
 
-#endif
+    void handlePost(const vector<string>& args);
+    void handleTrend(const vector<string>& args);
+    void handleLike(const vector<string>& args);
+    void handleShowPost(const vector<string>& args);
+};

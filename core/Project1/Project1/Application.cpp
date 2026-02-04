@@ -1,4 +1,10 @@
 #include "Application.h"
+#include "PostManager.h"
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+
+using namespace std;
 
 void Application::run() {
     cout << "--- Welcome to ConnectGram ---" << endl;
@@ -38,6 +44,12 @@ void Application::handleCommand(const string& input) {
         isRunning = false;
         cout << "Exiting... Goodbye!" << endl;
     }
+
+    else if (cmd == "post") handlePost(args);
+    else if (cmd == "trend") handleTrend(args);
+    else if (cmd == "like") handleLike(args);
+    else if (cmd == "show_post") handleShowPost(args);
+
     else cout << "Unknown command. Type 'help' for instructions." << endl;
 }
 
@@ -147,6 +159,71 @@ void Application::showHelp() const {
         << "follow <username>\n"
         << "unfollow <username>\n"
         << "show_user\n"
+        << "post \"<content>\"\n"
+        << "trend <hashtag>\n"
+        << "like <post_id>\n"
+        << "show_post <post_id>\n"
         << "help\n"
         << "exit\n" << endl;
+}
+
+void Application::handlePost(const vector<string>& args) {
+    if (!currentUser) {
+        cout << "Please login first!" << endl;
+        return;
+    }
+    if (args.empty()) {
+        cout << "Usage: post \"<content>\"" << endl;
+        return;
+    }
+
+    string content;
+    for (const auto& s : args) {
+        if (!content.empty()) content += " ";
+        content += s;
+    }
+
+    Post* p = new Post(currentUser, content);
+    postManager.addPost(p);
+    cout << "Post created with ID: " << p->id << endl;
+}
+
+void Application::handleTrend(const vector<string>& args) {
+    if (args.empty()) {
+        cout << "Usage: trend <hashtag>" << endl;
+        return;
+    }
+    string hashtag = args[0];
+    auto posts = postManager.getPostsByHashtag(hashtag);
+    if (posts.empty()) {
+        cout << "No posts found for #" << hashtag << endl;
+        return;
+    }
+    cout << "Top posts for #" << hashtag << ":\n";
+    for (auto* p : posts) p->display();
+}
+
+void Application::handleLike(const vector<string>& args) {
+    if (!currentUser) {
+        cout << "Please login first!" << endl;
+        return;
+    }
+    if (args.empty()) {
+        cout << "Usage: like <post_id>" << endl;
+        return;
+    }
+    int postId = stoi(args[0]);
+    if (postManager.likePost(postId))
+        cout << "Liked post " << postId << endl;
+    else
+        cout << "Post not found." << endl;
+}
+
+void Application::handleShowPost(const vector<string>& args) {
+    if (args.empty()) {
+        cout << "Usage: show_post <post_id>" << endl;
+        return;
+    }
+    int postId = stoi(args[0]);
+    postManager.displayPost(postId);
 }
