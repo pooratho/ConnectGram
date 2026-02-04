@@ -4,26 +4,25 @@
 #include <string>
 #include <set>
 #include <deque>
+
 using namespace std;
 
 class User {
 private:
     string password;
-    int followersCount;
+    int followersCount = 0;
+    deque<string> searchHistory;
 
 public:
     string username;
-    set<string> following;
-    deque<string> searchHistory;
 
+    set<User*> following;
 
     User(const string& uname, const string& pwd);
 
     void setPassword(const string& pwd);
     bool checkPassword(const string& pwd) const;
 
-    void follow(const string& other);
-    void unfollow(const string& other);
     void addFollower();
     void removeFollower();
     int getFollowersCount() const;
