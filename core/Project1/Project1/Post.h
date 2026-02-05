@@ -23,6 +23,7 @@ public:
     Post(User* author, const std::string& content);
     void addLike();
     const std::set<std::string>& getHashtags() const;
+    double calculateScore() const;
     void display() const;
 };
 

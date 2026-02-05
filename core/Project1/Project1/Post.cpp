@@ -31,6 +31,19 @@ void Post::parseHashtags() {
     }
 }
 
+double Post::calculateScore() const {
+    using namespace std::chrono;
+
+    auto now = system_clock::now();
+    auto elapsed = duration_cast<seconds>(now - timestamp).count();
+
+    if (elapsed <= 0) elapsed = 1;
+
+    return (likeCount * 2)
+        + (author->getFollowersCount() * 0.5)
+        + (1000.0 / elapsed);
+}
+
 void Post::display() const {
     std::cout << "Post ID: " << id << "\n";
     std::cout << "Author: " << author->username << "\n";

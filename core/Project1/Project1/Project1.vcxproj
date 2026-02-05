@@ -132,6 +132,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="HeapNode.h" />
+    <ClInclude Include="MaxHeap.h" />
     <ClInclude Include="Post.h" />
     <ClInclude Include="PostManager.h" />
     <ClInclude Include="Trie.h" />
@@ -140,6 +142,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MaxHeap.cpp" />
     <ClCompile Include="Post.cpp" />
     <ClCompile Include="PostManager.cpp" />
     <ClCompile Include="Trie.cpp" />
