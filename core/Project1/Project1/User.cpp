@@ -39,6 +39,16 @@ const set<User*>& User::getFollowings() const {
     return following;
 }
 
+void User::addFollowing(User* user) {
+    if (user && user != this)
+        following.insert(user);
+}
+
+void User::removeFollowing(User* user) {
+    if (user)
+        following.erase(user);
+}
+
 void User::addPost(Post* post) {
     if (post) posts.push_back(post);
 }

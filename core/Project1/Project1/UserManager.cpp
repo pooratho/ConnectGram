@@ -64,16 +64,19 @@ bool UserManager::follow(User* from, const string& targetUsername) {
         return false;
     }
 
-    if (from->following.count(target)) {
+    // ÇÓÊÝÇÏå ÇÒ getter
+    if (from->getFollowings().count(target)) {
         cout << "Error: Already following this user.\n";
         return false;
     }
 
-    from->following.insert(target);
+    // ÇÖÇÝå ˜ÑÏä Èå set ÑÇ?æÊ
+    from->following.insert(target); // æä UserManager ÏæÓÊ ÏÇÑÏ ãÏ?Ñ?Ê ˜äÏ
     target->addFollower();
 
     return true;
 }
+
 
 bool UserManager::unfollow(User* from, const string& targetUsername) {
     if (!from) {

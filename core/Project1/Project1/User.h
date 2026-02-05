@@ -4,6 +4,7 @@
 #include <string>
 #include <set>
 #include <deque>
+#include <vector>
 #include "Post.h"
 
 using namespace std;
@@ -31,6 +32,8 @@ public:
     int getFollowersCount() const;
 
     const set<User*>& getFollowings() const;
+    void addFollowing(User* user);   
+    void removeFollowing(User* user); 
 
     void addPost(Post* post);
     const vector<Post*>& getPosts() const;
