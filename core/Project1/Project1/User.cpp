@@ -1,8 +1,11 @@
 #include "User.h"
+#include "Post.h"
 #include <iostream>
 #include <functional>
 
 using namespace std;
+
+class Post;
 
 User::User(const string& uname, const string& pwd)
     : username(uname), followersCount(0)
@@ -30,6 +33,18 @@ void User::removeFollower() {
 
 int User::getFollowersCount() const {
     return followersCount; 
+}
+
+const set<User*>& User::getFollowings() const {
+    return following;
+}
+
+void User::addPost(Post* post) {
+    if (post) posts.push_back(post);
+}
+
+const vector<Post*>& User::getPosts() const {
+    return posts;
 }
 
 void User::addSearchHistory(const string& term) {

@@ -4,19 +4,22 @@
 #include <string>
 #include <set>
 #include <deque>
+#include "Post.h"
 
 using namespace std;
+
+class Post;
 
 class User {
 private:
     string password;
     int followersCount = 0;
     deque<string> searchHistory;
+    set<User*> following;
+    vector<Post*> posts;
 
 public:
     string username;
-
-    set<User*> following;
 
     User(const string& uname, const string& pwd);
 
@@ -26,6 +29,11 @@ public:
     void addFollower();
     void removeFollower();
     int getFollowersCount() const;
+
+    const set<User*>& getFollowings() const;
+
+    void addPost(Post* post);
+    const vector<Post*>& getPosts() const;
 
     void addSearchHistory(const string& term);
     void showSearchHistory() const;
