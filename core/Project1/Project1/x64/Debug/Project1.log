@@ -1,3 +1,13 @@
 ﻿  Application.cpp
-x64\Debug\UserManager.obj : warning LNK4042: object specified more than once; extras ignored
-  Project1.vcxproj -> C:\Users\Taheri\OneDrive\دسکتاپ\ConnectGram\core\Project1\x64\Debug\Project1.exe
+  HashTable.cpp
+  main.cpp
+  MaxHeap.cpp
+  Post.cpp
+\MaxHeap.cpp(1,1): error C1083: Cannot open source file: 'MaxHeap.cpp': No such file or directory
+  (compiling source file '/MaxHeap.cpp')
+  
+  PostManager.cpp
+  User.cpp
+  UserManager.cpp
+  UserManager.h
+  Generating Code...
