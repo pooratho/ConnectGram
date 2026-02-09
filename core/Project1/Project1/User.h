@@ -15,7 +15,7 @@ class User {
 private:
     string password;
     int followersCount = 0;
-    deque<string> searchHistory;
+    deque<string> searchHistory; 
     set<User*> following;
     vector<Post*> posts;
 

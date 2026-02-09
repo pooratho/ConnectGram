@@ -64,19 +64,16 @@ bool UserManager::follow(User* from, const string& targetUsername) {
         return false;
     }
 
-    // ÇÓÊÝÇÏå ÇÒ getter
     if (from->getFollowings().count(target)) {
         cout << "Error: Already following this user.\n";
         return false;
     }
 
-    // ÇÖÇÝå ˜ÑÏä Èå set ÑÇ?æÊ
-    from->following.insert(target); // æä UserManager ÏæÓÊ ÏÇÑÏ ãÏ?Ñ?Ê ˜äÏ
+    from->addFollowing(target);
     target->addFollower();
 
     return true;
 }
-
 
 bool UserManager::unfollow(User* from, const string& targetUsername) {
     if (!from) {
@@ -90,12 +87,12 @@ bool UserManager::unfollow(User* from, const string& targetUsername) {
         return false;
     }
 
-    if (!from->following.count(target)) {
+    if (!from->getFollowings().count(target)) {
         cout << "Error: You are not following this user.\n";
         return false;
     }
 
-    from->following.erase(target);
+    from->removeFollowing(target);
     target->removeFollower();
 
     return true;
