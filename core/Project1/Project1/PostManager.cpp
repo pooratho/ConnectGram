@@ -2,8 +2,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <unordered_map>
-#include <unordered_set>
 #include <algorithm>
 
 PostManager::~PostManager() {
@@ -13,11 +11,14 @@ PostManager::~PostManager() {
 }
 
 void PostManager::addPost(Post* p) {
+    if (!p) return;
+
     allPosts[p->id] = p;
+
     userPosts[p->author->username].push_back(p);
 
     for (const auto& tag : p->getHashtags()) {
-        hashtagIndex[tag].insert(p);
+        hashtagTable.insert(tag, p);
     }
 }
 
@@ -25,15 +26,14 @@ bool PostManager::deletePost(int postId) {
     if (!allPosts.count(postId)) return false;
 
     Post* p = allPosts[postId];
+
     allPosts.erase(postId);
 
     auto& postsVec = userPosts[p->author->username];
     postsVec.erase(std::remove(postsVec.begin(), postsVec.end(), p), postsVec.end());
 
     for (const auto& tag : p->getHashtags()) {
-        hashtagIndex[tag].erase(p);
-        if (hashtagIndex[tag].empty())
-            hashtagIndex.erase(tag);
+        hashtagTable.remove(tag, p);
     }
 
     delete p;
@@ -47,10 +47,7 @@ std::vector<Post*> PostManager::getPostsByUser(const std::string& username) {
 }
 
 std::vector<Post*> PostManager::getPostsByHashtag(const std::string& hashtag) {
-    std::vector<Post*> result;
-    if (hashtagIndex.count(hashtag)) {
-        result.assign(hashtagIndex[hashtag].begin(), hashtagIndex[hashtag].end());
-    }
+    std::vector<Post*> result = hashtagTable.get(hashtag);
 
     std::sort(result.begin(), result.end(), [](Post* a, Post* b) {
         return a->timestamp > b->timestamp;

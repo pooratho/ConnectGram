@@ -50,3 +50,14 @@ obj/
 *.user
 *.suo
 *.VC.db
+
+# Visual Studio temporary files
+*.log
+*.tlog
+*.idb
+*.obj
+*.pdb
+*.exe
+x64/
+Debug/
+Release/
