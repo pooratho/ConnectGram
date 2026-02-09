@@ -2,17 +2,17 @@
 #define POSTMANAGER_H
 
 #include <unordered_map>
-#include <unordered_set>
 #include <vector>
 #include <string>
 #include "Post.h"
 #include "User.h"
+#include "HashTable.h"
 
 class PostManager {
 private:
-    std::unordered_map<int, Post*> allPosts;          
-    std::unordered_map<std::string, std::vector<Post*>> userPosts; 
-    std::unordered_map<std::string, std::unordered_set<Post*>> hashtagIndex;
+    std::unordered_map<int, Post*> allPosts;
+    std::unordered_map<std::string, std::vector<Post*>> userPosts;
+    HashTable hashtagTable;
 
 public:
     PostManager() = default;

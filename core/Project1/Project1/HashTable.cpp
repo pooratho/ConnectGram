@@ -54,3 +54,23 @@ bool HashTable::contains(const string& hashtag) const {
     }
     return false;
 }
+
+void HashTable::remove(const std::string& hashtag, Post* post) {
+    if (!post) return;
+
+    int index = hash(hashtag);
+
+    for (auto it = buckets[index].begin(); it != buckets[index].end(); ++it) {
+        if (it->hashtag == hashtag) {
+            auto& postsVec = it->posts;
+            postsVec.erase(std::remove(postsVec.begin(), postsVec.end(), post), postsVec.end());
+
+            if (postsVec.empty()) {
+                buckets[index].erase(it);
+            }
+
+            return;
+        }
+    }
+}
+

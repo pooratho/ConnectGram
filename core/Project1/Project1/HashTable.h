@@ -23,6 +23,7 @@ public:
     void insert(const std::string& hashtag, Post* post);
     std::vector<Post*> get(const std::string& hashtag) const;
     bool contains(const std::string& hashtag) const;
+    void remove(const std::string& hashtag, Post* post);
 };
 
 #endif
