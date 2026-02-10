@@ -44,11 +44,14 @@ void Application::handleCommand(const string& input) {
         isRunning = false;
         cout << "Exiting... Goodbye!" << endl;
     }
-
     else if (cmd == "post") handlePost(args);
     else if (cmd == "trend") handleTrend(args);
     else if (cmd == "like") handleLike(args);
     else if (cmd == "show_post") handleShowPost(args);
+
+    // ===== ÝÇÒ 3 =====
+    else if (cmd == "show_feed") handleShowFeed();
+    else if (cmd == "smart_search") handleSmartSearch(args);
 
     else cout << "Unknown command. Type 'help' for instructions." << endl;
 }
@@ -163,6 +166,8 @@ void Application::showHelp() const {
         << "trend <hashtag>\n"
         << "like <post_id>\n"
         << "show_post <post_id>\n"
+        << "show_feed\n"
+        << "smart_search <hashtag>\n"
         << "help\n"
         << "exit\n" << endl;
 }
@@ -185,7 +190,7 @@ void Application::handlePost(const vector<string>& args) {
 
     Post* p = new Post(currentUser, content);
     postManager.addPost(p);
-    cout << "Post created with ID: " << p->id << endl;
+    cout << "Post created with ID: " << p->getId() << endl;
 }
 
 void Application::handleTrend(const vector<string>& args) {
@@ -230,4 +235,49 @@ void Application::handleShowPost(const vector<string>& args) {
     }
     int postId = stoi(args[0]);
     postManager.displayPost(postId);
+}
+
+// ===== ÝÇÒ 3 =====
+
+void Application::handleShowFeed() {
+    if (!currentUser) {
+        cout << "Please login first.\n";
+        return;
+    }
+
+    auto feedPosts = postManager.showFeed(currentUser);
+
+    if (feedPosts.empty()) {
+        cout << "Your feed is empty!\n";
+        return;
+    }
+
+    cout << "Your feed:\n";
+    for (auto* post : feedPosts) {
+        post->display();
+        cout << "-------------------\n";
+    }
+}
+
+void Application::handleSmartSearch(const vector<string>& args) {
+    if (args.empty()) {
+        cout << "Usage: smart_search <hashtag>\n";
+        return;
+    }
+
+    string hashtag = args[0];
+
+    vector<Post*> posts = postManager.getPostsByHashtag(hashtag);
+    if (posts.empty()) {
+        cout << "No posts found for #" << hashtag << endl;
+        return;
+    }
+
+    auto topPosts = postManager.getTopPostsByHashtag(hashtag, 10);
+
+    cout << "Top posts for #" << hashtag << ":\n";
+    for (auto* post : topPosts) {
+        post->display();
+        cout << "-------------------\n";
+    }
 }

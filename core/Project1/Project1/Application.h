@@ -28,4 +28,7 @@ private:
     void handleTrend(const vector<string>& args);
     void handleLike(const vector<string>& args);
     void handleShowPost(const vector<string>& args);
+
+    void handleShowFeed(); 
+    void handleSmartSearch(const vector<string>& args); 
 };
