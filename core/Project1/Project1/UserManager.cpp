@@ -1,4 +1,5 @@
 #include "UserManager.h"
+#include "SearchManager.h"
 #include <iostream>
 
 using namespace std;
@@ -96,4 +97,18 @@ bool UserManager::unfollow(User* from, const string& targetUsername) {
     target->removeFollower();
 
     return true;
+}
+
+vector<string> UserManager::getSmartSuggestions(const string& target, int threshold) const {
+    vector<string> suggestions;
+
+    for (const auto& [username, userPtr] : users) {
+        if (username.size() != target.size()) continue; 
+
+        int dist = SearchManager::calculateHamming(target, username);
+        if (dist <= threshold)
+            suggestions.push_back(username);
+    }
+
+    return suggestions;
 }

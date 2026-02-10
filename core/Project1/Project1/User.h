@@ -15,7 +15,7 @@ class User {
 private:
     string password;
     int followersCount = 0;
-    deque<string> searchHistory; 
+    deque<string> searchHistory;
     set<User*> following;
     vector<Post*> posts;
 
@@ -32,14 +32,14 @@ public:
     int getFollowersCount() const;
 
     const set<User*>& getFollowings() const;
-    void addFollowing(User* user);   
-    void removeFollowing(User* user); 
+    void addFollowing(User* user);
+    void removeFollowing(User* user);
 
     void addPost(Post* post);
     const vector<Post*>& getPosts() const;
 
     void addSearchHistory(const string& term);
-    void showSearchHistory() const;
+    const deque<string>& getSearchHistory() const;
 
     void display() const;
 };

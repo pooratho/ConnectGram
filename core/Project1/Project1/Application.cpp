@@ -1,4 +1,4 @@
-#include "Application.h"
+ï»¿#include "Application.h"
 #include "PostManager.h"
 #include <iostream>
 #include <sstream>
@@ -49,7 +49,6 @@ void Application::handleCommand(const string& input) {
     else if (cmd == "like") handleLike(args);
     else if (cmd == "show_post") handleShowPost(args);
 
-    // ===== ÝÇÒ 3 =====
     else if (cmd == "show_feed") handleShowFeed();
     else if (cmd == "smart_search") handleSmartSearch(args);
 
@@ -237,8 +236,6 @@ void Application::handleShowPost(const vector<string>& args) {
     postManager.displayPost(postId);
 }
 
-// ===== ÝÇÒ 3 =====
-
 void Application::handleShowFeed() {
     if (!currentUser) {
         cout << "Please login first.\n";
@@ -261,23 +258,49 @@ void Application::handleShowFeed() {
 
 void Application::handleSmartSearch(const vector<string>& args) {
     if (args.empty()) {
-        cout << "Usage: smart_search <hashtag>\n";
+        cout << "Usage: smart_search <term>" << endl;
+        return;
+    }
+    string target = args[0];
+
+    if (currentUser) currentUser->addSearchHistory(target);
+
+    if (userManager.getUser(target)) {
+        cout << "Exact match found: @" << target << endl;
+    }
+    else {
+        vector<string> suggestions = userManager.getSmartSuggestions(target, 3);
+
+        if (!suggestions.empty()) {
+            cout << "User not found. Did you mean?" << endl;
+            for (const string& s : suggestions)
+                cout << " -> " << s << endl;
+        }
+        else {
+            cout << "No matches or similar users found for '" << target << "'." << endl;
+        }
+    }
+}
+
+void Application::handleShowHistory() {
+    if (!currentUser) {
+        cout << "Error: You must be logged in to view your search history." << endl;
         return;
     }
 
-    string hashtag = args[0];
+    const auto& history = currentUser->getSearchHistory();
 
-    vector<Post*> posts = postManager.getPostsByHashtag(hashtag);
-    if (posts.empty()) {
-        cout << "No posts found for #" << hashtag << endl;
+    if (history.empty()) {
+        cout << "Your search history is empty. Try searching for something first!" << endl;
         return;
     }
 
-    auto topPosts = postManager.getTopPostsByHashtag(hashtag, 10);
+    cout << "--- Your Recent Searches ---" << endl;
 
-    cout << "Top posts for #" << hashtag << ":\n";
-    for (auto* post : topPosts) {
-        post->display();
-        cout << "-------------------\n";
+    int index = 1;
+    for (const auto& term : history) {
+        cout << index << ". " << term << endl;
+        index++;
     }
+    cout << "-----------------------------" << endl;
 }

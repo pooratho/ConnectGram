@@ -28,6 +28,8 @@ public:
 
     bool follow(User* from, const string& targetUsername);
     bool unfollow(User* from, const string& targetUsername);
+
+    vector<string> getSmartSuggestions(const string& target, int threshold = 3) const;
 };
 
 #endif

@@ -137,6 +137,7 @@
     <ClInclude Include="MaxHeap.h" />
     <ClInclude Include="Post.h" />
     <ClInclude Include="PostManager.h" />
+    <ClInclude Include="SearchManager.h" />
     <ClInclude Include="Trie.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
@@ -147,6 +148,7 @@
     <ClCompile Include="MaxHeap.cpp" />
     <ClCompile Include="Post.cpp" />
     <ClCompile Include="PostManager.cpp" />
+    <ClCompile Include="SearchManager.cpp" />
     <ClCompile Include="Trie.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="UserManager.cpp" />

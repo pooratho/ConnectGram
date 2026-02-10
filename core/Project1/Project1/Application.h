@@ -31,4 +31,5 @@ private:
 
     void handleShowFeed(); 
     void handleSmartSearch(const vector<string>& args); 
+    void handleShowHistory();
 };

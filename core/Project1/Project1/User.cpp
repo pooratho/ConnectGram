@@ -5,8 +5,6 @@
 
 using namespace std;
 
-class Post;
-
 User::User(const string& uname, const string& pwd)
     : username(uname), followersCount(0)
 {
@@ -23,8 +21,8 @@ bool User::checkPassword(const string& pwd) const {
     return password == to_string(hasher(pwd));
 }
 
-void User::addFollower() { 
-    followersCount++; 
+void User::addFollower() {
+    followersCount++;
 }
 
 void User::removeFollower() {
@@ -32,7 +30,7 @@ void User::removeFollower() {
 }
 
 int User::getFollowersCount() const {
-    return followersCount; 
+    return followersCount;
 }
 
 const set<User*>& User::getFollowings() const {
@@ -58,15 +56,13 @@ const vector<Post*>& User::getPosts() const {
 }
 
 void User::addSearchHistory(const string& term) {
-    if (searchHistory.size() == 5) searchHistory.pop_front();
+    if (searchHistory.size() == 5)
+        searchHistory.pop_front();
     searchHistory.push_back(term);
 }
 
-void User::showSearchHistory() const {
-    cout << "Search History for " << username << ": ";
-    for (const auto& term : searchHistory)
-        cout << term << " ";
-    cout << endl;
+const deque<string>& User::getSearchHistory() const {
+    return searchHistory;
 }
 
 void User::display() const {
@@ -78,4 +74,3 @@ void User::display() const {
         cout << u->username << " ";
     cout << endl;
 }
-
