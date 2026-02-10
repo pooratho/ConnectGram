@@ -28,7 +28,6 @@ public:
     int getLikeCount() const { return likeCount; }
     std::chrono::system_clock::time_point getTimestamp() const { return timestamp; }
 
-    // „ œÂ«
     void addLike();
     const std::set<std::string>& getHashtags() const;
     double calculateScore() const;
