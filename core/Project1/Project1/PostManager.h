@@ -7,6 +7,7 @@
 #include <string>
 #include "Post.h"
 #include "User.h"
+#include "MaxHeap.h"
 
 class PostManager {
 private:
@@ -25,6 +26,8 @@ public:
     std::vector<Post*> getPostsByUser(const std::string& username);
 
     std::vector<Post*> getPostsByHashtag(const std::string& hashtag);
+
+    std::vector<Post*> getTopPostsByHashtag(const std::string& hashtag, int topN = 10);
 
     bool likePost(int postId);
 

@@ -15,30 +15,42 @@ int MaxHeap::right(int i) const {
 }
 
 void MaxHeap::heapifyUp(int i) {
-    while (i != 0 && heap[i] > heap[parent(i)]) {
-        std::swap(heap[i], heap[parent(i)]);
-        i = parent(i);
+    while (i > 0) {
+        int p = parent(i);
+        if (!(heap[i] > heap[p]))
+            break;
+
+        std::swap(heap[i], heap[p]);
+        i = p;
     }
 }
 
 void MaxHeap::heapifyDown(int i) {
-    int l = left(i);
-    int r = right(i);
-    int largest = i;
+    int size = heap.size();
 
-    if (l < heap.size() && heap[l] > heap[largest])
-        largest = l;
+    while (true) {
+        int l = left(i);
+        int r = right(i);
+        int largest = i;
 
-    if (r < heap.size() && heap[r] > heap[largest])
-        largest = r;
+        if (l < size && heap[l] > heap[largest])
+            largest = l;
 
-    if (largest != i) {
+        if (r < size && heap[r] > heap[largest])
+            largest = r;
+
+        if (largest == i)
+            break;
+
         std::swap(heap[i], heap[largest]);
-        heapifyDown(largest);
+        i = largest;
     }
 }
 
 void MaxHeap::insert(const HeapNode& node) {
+    if (!node.post)
+        throw std::invalid_argument("Cannot insert null Post into heap");
+
     heap.push_back(node);
     heapifyUp(heap.size() - 1);
 }
@@ -47,9 +59,11 @@ Post* MaxHeap::extractMax() {
     if (heap.empty())
         throw std::runtime_error("Heap is empty");
 
-    Post* maxPost = heap[0].post;
-    heap[0] = heap.back();
+    Post* maxPost = heap.front().post;
+
+    heap.front() = heap.back();
     heap.pop_back();
+
     if (!heap.empty())
         heapifyDown(0);
 

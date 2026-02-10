@@ -1,9 +1,5 @@
 #include "PostManager.h"
 #include <iostream>
-#include <vector>
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
 #include <algorithm>
 
 PostManager::~PostManager() {
@@ -13,8 +9,10 @@ PostManager::~PostManager() {
 }
 
 void PostManager::addPost(Post* p) {
-    allPosts[p->id] = p;
-    userPosts[p->author->username].push_back(p);
+    if (!p) return;
+
+    allPosts[p->getId()] = p;
+    userPosts[p->getAuthor()->username].push_back(p);
 
     for (const auto& tag : p->getHashtags()) {
         hashtagIndex[tag].insert(p);
@@ -27,13 +25,17 @@ bool PostManager::deletePost(int postId) {
     Post* p = allPosts[postId];
     allPosts.erase(postId);
 
-    auto& postsVec = userPosts[p->author->username];
-    postsVec.erase(std::remove(postsVec.begin(), postsVec.end(), p), postsVec.end());
+    auto& postsVec = userPosts[p->getAuthor()->username];
+    postsVec.erase(
+        std::remove(postsVec.begin(), postsVec.end(), p),
+        postsVec.end()
+    );
 
     for (const auto& tag : p->getHashtags()) {
         hashtagIndex[tag].erase(p);
-        if (hashtagIndex[tag].empty())
+        if (hashtagIndex[tag].empty()) {
             hashtagIndex.erase(tag);
+        }
     }
 
     delete p;
@@ -48,16 +50,38 @@ std::vector<Post*> PostManager::getPostsByUser(const std::string& username) {
 
 std::vector<Post*> PostManager::getPostsByHashtag(const std::string& hashtag) {
     std::vector<Post*> result;
+
     if (hashtagIndex.count(hashtag)) {
-        result.assign(hashtagIndex[hashtag].begin(), hashtagIndex[hashtag].end());
+        result.assign(
+            hashtagIndex[hashtag].begin(),
+            hashtagIndex[hashtag].end()
+        );
     }
 
-    std::sort(result.begin(), result.end(), [](Post* a, Post* b) {
-        return a->timestamp > b->timestamp;
-        });
+    std::sort(result.begin(), result.end(),
+        [](Post* a, Post* b) {
+            return a->getTimestamp() > b->getTimestamp();
+        }
+    );
 
     if (result.size() > 10)
         result.resize(10);
+
+    return result;
+}
+
+std::vector<Post*> PostManager::getTopPostsByHashtag(const std::string& hashtag, int topN) {
+    std::vector<Post*> result;
+    if (!hashtagIndex.count(hashtag))
+        return result;
+
+    MaxHeap heap;
+    for (auto* post : hashtagIndex[hashtag]) {
+        heap.insert({ post->calculateScore(), post });
+    }
+
+    while (!heap.isEmpty() && result.size() < topN)
+        result.push_back(heap.extractMax());
 
     return result;
 }

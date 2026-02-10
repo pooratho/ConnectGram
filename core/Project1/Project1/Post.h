@@ -9,10 +9,6 @@ class User;
 
 class Post {
 private:
-    void parseHashtags();
-    static int nextId;
-
-public:
     int id;
     std::string content;
     User* author;
@@ -20,7 +16,19 @@ public:
     std::set<std::string> hashtags;
     std::chrono::system_clock::time_point timestamp;
 
+    static int nextId;
+    void parseHashtags();
+
+public:
     Post(User* author, const std::string& content);
+
+    int getId() const { return id; }
+    std::string getContent() const { return content; }
+    User* getAuthor() const { return author; }
+    int getLikeCount() const { return likeCount; }
+    std::chrono::system_clock::time_point getTimestamp() const { return timestamp; }
+
+    // „ œÂ«
     void addLike();
     const std::set<std::string>& getHashtags() const;
     double calculateScore() const;
