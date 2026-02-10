@@ -194,13 +194,17 @@ void Application::handleTrend(const vector<string>& args) {
         return;
     }
     string hashtag = args[0];
-    auto posts = postManager.getPostsByHashtag(hashtag);
+
+    vector<Post*> posts = postManager.getPostsByHashtag(hashtag);
+
     if (posts.empty()) {
         cout << "No posts found for #" << hashtag << endl;
         return;
     }
+
     cout << "Top posts for #" << hashtag << ":\n";
-    for (auto* p : posts) p->display();
+    for (auto* p : posts)
+        p->display();
 }
 
 void Application::handleLike(const vector<string>& args) {

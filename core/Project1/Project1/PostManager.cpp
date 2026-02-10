@@ -1,5 +1,7 @@
 #include "PostManager.h"
 #include <iostream>
+#include <vector>
+#include <string>
 #include <algorithm>
 
 PostManager::~PostManager() {
@@ -15,7 +17,7 @@ void PostManager::addPost(Post* p) {
     userPosts[p->getAuthor()->username].push_back(p);
 
     for (const auto& tag : p->getHashtags()) {
-        hashtagIndex[tag].insert(p);
+        hashtagTable.insert(tag, p);
     }
 }
 
@@ -23,6 +25,7 @@ bool PostManager::deletePost(int postId) {
     if (!allPosts.count(postId)) return false;
 
     Post* p = allPosts[postId];
+
     allPosts.erase(postId);
 
     auto& postsVec = userPosts[p->getAuthor()->username];
@@ -32,10 +35,7 @@ bool PostManager::deletePost(int postId) {
     );
 
     for (const auto& tag : p->getHashtags()) {
-        hashtagIndex[tag].erase(p);
-        if (hashtagIndex[tag].empty()) {
-            hashtagIndex.erase(tag);
-        }
+        hashtagTable.remove(tag, p);
     }
 
     delete p;
@@ -49,14 +49,8 @@ std::vector<Post*> PostManager::getPostsByUser(const std::string& username) {
 }
 
 std::vector<Post*> PostManager::getPostsByHashtag(const std::string& hashtag) {
-    std::vector<Post*> result;
 
-    if (hashtagIndex.count(hashtag)) {
-        result.assign(
-            hashtagIndex[hashtag].begin(),
-            hashtagIndex[hashtag].end()
-        );
-    }
+    std::vector<Post*> result = hashtagTable.get(hashtag);
 
     std::sort(result.begin(), result.end(),
         [](Post* a, Post* b) {
@@ -72,19 +66,24 @@ std::vector<Post*> PostManager::getPostsByHashtag(const std::string& hashtag) {
 
 std::vector<Post*> PostManager::getTopPostsByHashtag(const std::string& hashtag, int topN) {
     std::vector<Post*> result;
-    if (!hashtagIndex.count(hashtag))
+
+    std::vector<Post*> posts = hashtagTable.get(hashtag);
+    if (posts.empty())
         return result;
 
     MaxHeap heap;
-    for (auto* post : hashtagIndex[hashtag]) {
+    for (Post* post : posts) {
         heap.insert({ post->calculateScore(), post });
     }
 
-    while (!heap.isEmpty() && result.size() < topN)
+    while (!heap.isEmpty() && result.size() < topN) {
         result.push_back(heap.extractMax());
+    }
 
     return result;
 }
+
+
 
 bool PostManager::likePost(int postId) {
     if (!allPosts.count(postId)) return false;
