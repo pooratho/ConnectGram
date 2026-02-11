@@ -39,6 +39,7 @@ void Application::handleCommand(const string& input) {
     else if (cmd == "follow") handleFollow(args);
     else if (cmd == "unfollow") handleUnfollow(args);
     else if (cmd == "show_user") showCurrentUser();
+    else if (cmd == "show_history") handleShowHistory(); 
     else if (cmd == "help") showHelp();
     else if (cmd == "exit") {
         isRunning = false;
@@ -48,12 +49,12 @@ void Application::handleCommand(const string& input) {
     else if (cmd == "trend") handleTrend(args);
     else if (cmd == "like") handleLike(args);
     else if (cmd == "show_post") handleShowPost(args);
-
     else if (cmd == "show_feed") handleShowFeed();
     else if (cmd == "smart_search") handleSmartSearch(args);
-
-    else cout << "Unknown command. Type 'help' for instructions." << endl;
+    else
+        cout << "Unknown command. Type 'help' for instructions." << endl;
 }
+
 
 void Application::handleSignup(const vector<string>& args) {
     if (args.size() != 2) {
@@ -227,7 +228,7 @@ void Application::handleLike(const vector<string>& args) {
     bool success = postManager.likePost(postId, currentUser);
 
     if (success) {
-        cout << "Post " << postId << " liked successfully ❤️" << endl;
+        cout << "Post " << postId << " liked successfully" << endl;
     }
     else {
         cout << "You already liked this post or post not found." << endl;
