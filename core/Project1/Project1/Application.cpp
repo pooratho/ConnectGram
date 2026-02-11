@@ -216,15 +216,22 @@ void Application::handleLike(const vector<string>& args) {
         cout << "Please login first!" << endl;
         return;
     }
+
     if (args.empty()) {
         cout << "Usage: like <post_id>" << endl;
         return;
     }
+
     int postId = stoi(args[0]);
-    if (postManager.likePost(postId))
-        cout << "Liked post " << postId << endl;
-    else
-        cout << "Post not found." << endl;
+
+    bool success = postManager.likePost(postId, currentUser);
+
+    if (success) {
+        cout << "Post " << postId << " liked successfully ❤️" << endl;
+    }
+    else {
+        cout << "You already liked this post or post not found." << endl;
+    }
 }
 
 void Application::handleShowPost(const vector<string>& args) {

@@ -67,11 +67,14 @@ std::vector<Post*> PostManager::getTopPostsByHashtag(const std::string& hashtag,
     return result;
 }
 
-bool PostManager::likePost(int postId) {
-    if (!allPosts.count(postId)) return false;
-    allPosts[postId]->addLike();
-    return true;
+bool PostManager::likePost(int postId, User* user) {
+    auto it = allPosts.find(postId);
+    if (it == allPosts.end())
+        return false;
+
+    return it->second->addLike(user);
 }
+
 
 void PostManager::displayPost(int postId) {
     if (allPosts.count(postId))

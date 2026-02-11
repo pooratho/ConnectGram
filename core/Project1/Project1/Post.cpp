@@ -11,9 +11,17 @@ Post::Post(User* author, const std::string& content)
     parseHashtags();
 }
 
-void Post::addLike() {
+bool Post::addLike(User* user) {
+    if (!user) return false;
+
+    if (likedUsers.count(user->username))
+        return false;
+
+    likedUsers.insert(user->username);
     likeCount++;
+    return true;
 }
+
 
 const std::set<std::string>& Post::getHashtags() const {
     return hashtags;
@@ -48,8 +56,10 @@ void Post::display() const {
     std::cout << "Author: " << author->username << "\n";
     std::cout << "Content: " << content << "\n";
     std::cout << "Likes: " << likeCount << "\n";
+    std::cout << "Score: " << calculateScore() << "\n";
     std::cout << "Hashtags: ";
     for (const auto& tag : hashtags)
         std::cout << "#" << tag << " ";
     std::cout << "\n";
 }
+

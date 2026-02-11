@@ -26,7 +26,7 @@ public:
     std::vector<Post*> getPostsByHashtag(const std::string& hashtag);
     std::vector<Post*> getTopPostsByHashtag(const std::string& hashtag, int topN = 10);
 
-    bool likePost(int postId);
+    bool likePost(int postId, User* user);
     void displayPost(int postId);
 
     std::vector<Post*> showFeed(User* currentUser);

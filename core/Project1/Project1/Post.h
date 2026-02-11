@@ -15,6 +15,7 @@ private:
     int likeCount;
     std::set<std::string> hashtags;
     std::chrono::system_clock::time_point timestamp;
+    std::set<std::string> likedUsers;
 
     static int nextId;
     void parseHashtags();
@@ -28,7 +29,8 @@ public:
     int getLikeCount() const { return likeCount; }
     std::chrono::system_clock::time_point getTimestamp() const { return timestamp; }
 
-    void addLike();
+    bool addLike(User* user);
+
     const std::set<std::string>& getHashtags() const;
     double calculateScore() const;
     void display() const;
